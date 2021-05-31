@@ -72,14 +72,19 @@ then
     sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/configure
     sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/src/extra/blas/Makefile.win
     #
+    # https://stackoverflow.com/questions/51364034/how-can-i-install-r-in-linux-server-when-i-run-the-configure-command-i-am-get
+    # 
+    # Compiling from source
+    # https://github.com/postgres-plr/plr/blob/master/userguide.md
+    #
     cd ${rsource}
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure                          --prefix=${rroot}
+      ./configure --enable-R-shlib                           --prefix=${rroot}
     fi
     if [ "${Configuration}" == "Debug" ]
     then
-      ./configure                          --prefix=${rroot}
+      ./configure --enable-R-shlib --enable-memory-profiling --prefix=${rroot}
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"

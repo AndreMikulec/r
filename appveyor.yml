@@ -203,7 +203,7 @@ for:
   ### NEED A CYGWIN COMPILED "R", so "rversion" (if any) is effectively ignored
   - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
   ### BUILD MYSELF
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P gcc-core -P gcc-g++ -P gcc-fortran
+  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P gcc-core -P gcc-fortran
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libicu-devel 
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libtiff-devel
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libjpeg-devel -P libpng16-devel
