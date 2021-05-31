@@ -243,6 +243,8 @@ for:
 artifacts:
 - path: 'r-*.7z'
   name: r_7z
+- path: '%rsource%\src\gnuwin32\*.log'
+  name: logs
 
 deploy:
 
