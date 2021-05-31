@@ -1,0 +1,301 @@
+# Skipping commits affecting specific files (GitHub and Bitbucket only).
+skip_commits:
+  files:
+    # skipping AppVeyor build if, in the push’s head commit, all of the files
+    # have the extension .md
+    - '**/*.md'
+
+image: Visual Studio 2015
+clone_depth: 1
+
+environment:
+  # Always Try to save
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
+  #
+  # https://cygwin.com/mirrors.html and MobaXterm ~/.aptcyg/setup.ini
+  #
+  # CYG_MIRROR: http://cygwin.mirror.rafal.ca/
+  CYG_MIRROR: https://mirrors.kernel.org/sourceware/cygwin/
+  # Here, slashes can also be pointing right.
+  CYG_CACHE: C:\cygwin\var\cache\setup
+
+  matrix:
+
+  - r: tags/R-4-1-0 # volatile commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x64
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    compiler: cygwin
+    #
+    githubcache: true
+
+  - r: tags/R-4-1-0 # volatile commit - from git
+    PlatformToolset: v142
+    Configuration: Debug
+    Platform: x86
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    compiler: cygwin
+    #
+    githubcache: true
+
+for:
+-
+  matrix:
+    only:
+      - compiler: cygwin
+
+  # mileage from cygwin 32bit will vary
+  # https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Cygwin
+
+  init:
+  - echo compiler cygwin init
+  - systeminfo
+  # https://stackoverflow.com/questions/5089389/how-can-i-check-what-version-edition-of-visual-studio-is-installed-programmatica
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property productId
+  - if not "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2015" "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property catalog_productLineVersion
+  # Make %x64% available for caching
+  # a variable used in the Appveyor cach area must be defined in the init
+  - set gitrevshort=%APPVEYOR_REPO_COMMIT:~0,8%
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if ("${env:compiler}" -eq "cygwin") {
+        if ("${env:Platform}" -eq "x64") {
+          ${env:CYG_ARCH} = "x86_64"
+          ${env:CYG_ROOT} = "C:\cygwin64"
+        } else {
+          ${env:CYG_ARCH} = "x86"
+          ${env:CYG_ROOT} = "C:\cygwin"
+        }
+      }
+      #       # cygwin DOES NOT do R subarchitectures
+      #       if ("${env:Platform}" -eq "x64") {
+      #         ${env:R_ARCH} = "/x64"
+      #       } else {
+      #         ${env:R_ARCH} = "/i386"
+      #       }
+      ${env:rbinurl} = "https://cran.r-project.org/bin/windows/base/old/${env:rversion}/R-${env:rversion}-win.exe"
+      # "make installcheck" does not like spaces
+      ${env:R_HOME} = "C:\RINSTALL"
+      #
+      # also see that each *.sh dot sources early ". ./init.sh"
+      if ("${env:Platform}" -eq "x64") {
+        ${env:bit} = "64"
+      } else {
+        ${env:bit} = "32"
+      }
+      # cygwin case (NIX case rbit can be "64" or "")
+      if ("${env:Platform}" -eq "x64") {
+        ${env:rbit} = ""
+      } else {
+        ${env:rbit} = ""
+      }
+
+  #
+  # possible user provided in the matrix
+  # (for now, keep this area to be the same as "msys2" and NOT ALL "msys2" FEATURES are implemented)
+  #
+  - if not defined githubcache     set githubcache=false
+  - if not defined rhint           set rhint=none
+  - if not defined r               set r=none
+  - if not defined rlinkbinoldurl  set rlinkbinoldurl=none
+
+  install:
+  - echo compiler cygwin install
+  - ps: |
+      # Set-PSDebug -Trace 2
+      # LATER - REMOVE THIS LINE
+      ${env:PATH} = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;C:\msys64\bin;${env:PATH}"
+      ${env:PATH} = "${env:CYG_ROOT}\bin;${env:PATH}"
+
+  # From the version
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if("${env:r}" -ne "none") {
+        ${env:rversion} = ${env:r}
+      }
+      # if r equals none
+      # then later in the .sh scripts, rversion will be determined
+
+  #
+  # only used about a custom R build (not an CYGWIN already compiled binary)
+  #
+  # no quotes - IMPORTANT to pass to bash
+  - if not "%r%"=="none" set rroot=C:\RINSTALL
+  - if     "%r%"=="none" set rroot=%CYG_ROOT%
+  - mkdir "%rroot%"
+
+  #
+  # if "githubcache: true",
+  #   then use the git tag 0.0.0.0.0.GITHUBCACHE in github as a "cache" of
+  #   r already-compiled-binaries.
+  #
+  - set r7z=r-r%rversion%-%Platform%-%Configuration%-%compiler%.7z
+  - set rgithubbincacheurl=https://github.com/AndreMikulec/plr/releases/download/0.0.0.0.0.GITHUBCACHE/%r7z%
+  #
+  # note: using Windows instead of Powershell
+  # I could not get the Invoke-??? . . . I would silently run (and die), I would not get error feedback.
+  #
+  - if "%githubcache%"=="true" if not exist "%r7z%"  (
+      bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/rgithubbincachefailingfound.sh" &
+      for /f "delims=" %%i in (%APPVEYOR_BUILD_FOLDER%\rgithubbincachefailingfound.txt) do (set rgithubbincachefailingfound=%%i)
+    )
+  - if "%githubcache%"=="true" if "%rgithubbincachefailingfound%"=="false" curl -o "%r7z%" -L "%rgithubbincacheurl%"
+  - if "%githubcache%"=="true" if "%rgithubbincachefailingfound%"=="false" if exist "%r7z%" (set rgithubbincachefound=true) else (set rgithubbincachefound=false)
+  - if "%githubcache%"=="true" if "%rgithubbincachefailingfound%"=="false" if "%rgithubbincachefound%"=="true" (
+        mkdir            "%rroot%" &
+        7z x "%r7z%"   "-o%rroot%" &
+        dir              "%rroot%" &
+        if exist "%rroot%\bin\R.exe" (set rgithubbincacheextracted=true) else (set rgithubbincacheextracted=false)
+    )
+  #                            cygwin: executable IS STILL R.exe (not R)
+  # user provided (if any), in the matrix
+  - echo githubcache %githubcache%
+  # generated
+  # internal - do not reuse
+  - echo rgithubbincachefailingfound %rgithubbincachefailingfound%
+  # reused below
+  - echo rgithubbincachefound %rgithubbincachefound%
+  - if not defined rgithubbincachefound set rgithubbincachefound=false
+  - echo rgithubbincachefound %rgithubbincachefound%
+  # reused below
+  - echo rgithubbincacheextracted %rgithubbincacheextracted%
+  - if not defined rgithubbincacheextracted set rgithubbincacheextracted=false
+  - echo rgithubbincacheextracted %rgithubbincacheextracted%
+
+ #
+  # R from source code: git, tag, or commit
+  #
+  - ps: |
+      # Set-PSDebug -Trace 2
+      if (("${env:rgithubbincacheextracted}" -eq "false") -and ("${env:r}" -ne "none")) {
+        git config --global advice.detachedHead false
+        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
+        #
+        # commit - alphanumeric and all lowercase letters (slower download)
+        #
+        if("${env:rhint}" -eq "commit") {
+          git clone -q                            https://github.com/wch/r-source.git c:\projects\r
+          pwd
+          pushd c:\projects\r
+          pwd
+          git checkout -q                 ${env:r} -b ${env:r}
+          git branch
+          echo ${env:r}
+          popd
+          pwd
+        #
+        # git branch or tag(detached head)
+        # R case - git branches and tags have at least one capital letter - but expect mostly CAPS
+        #
+        } else {
+          git clone -q --depth 1 --branch ${env:r} https://github.com/wch/r-source.git c:\projects\r
+          pushd c:\projects\r
+          pwd
+          git branch
+          echo ${env:r}
+          popd
+          pwd
+        }
+        pushd c:\projects\r
+        pwd
+        echo "Files . . ."
+        $Table = Get-ChildItem
+        foreach ($Row in $Table) { $Row.Name }
+        popd
+      }
+  # https://cygwin.com/faq/faq.html#faq.setup.cli
+
+  # environment of cygwin
+  #
+  # EARLY 2021
+  # https://github.com/petere/postgresql/blob/c3606de647583d7cbb39aadd2a2a989af28b97ea/.appveyor.yml
+  # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
+
+  #
+  # to archive and un-archive (7z)
+  - 'setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
+
+  #
+  - bash -login -c "cygserver-config --yes"
+  #
+  - copy %CYG_ROOT%\etc\defaults\etc\cygserver.conf %CYG_ROOT%\etc\defaults\etc\cygserver.conf.original
+  - echo kern.ipc.shmmni 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
+  - echo kern.ipc.shmseg 32767 >> %CYG_ROOT%\etc\defaults\etc\cygserver.conf
+  #
+  - bash -login -c "cygrunsrv -S cygserver"
+
+  # R on cygwin
+  # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
+  ###
+  ### NEED A CYGWIN COMPILED "R", so "rversion" (if any) is effectively ignored
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo
+  ### BUILD MYSELF
+  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%"      -P R-debuginfo
+
+  build_script:
+  # override
+  - set R_HOME=%CYG_ROOT%\lib%rbit%\R
+  #
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
+
+  after_build:
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/after_build.sh"
+
+  test_script:
+  - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
+
+
+artifacts:
+- path: 'r-*.7z'
+  name: r_7z
+
+deploy:
+
+  # note, "deploy - on" "compiler: msys2, cygwin" is mis-interpreted as "msys2, cygwin"
+  # therefore, "msys2, cygwin" is not a usable deployment filter option
+
+  #
+  # To try to deploy to sourceforge, the following must have happened.
+  # Requesting a new shell for "andremikulec" and waiting for it to start.
+  # queued... creating... starting...
+  #
+
+  - provider: FTP
+    host: frs.sourceforge.net
+    protocol: sftp
+    # https://sourceforge.net/projects/andremikulec/files/
+    username: andremikulec,andremikulec.u
+    password:
+      secure: 4gk4GyW4O5RooiOyGeRdoA==
+    artifact: r_7z
+    folder: /home/frs/project/andremikulec
+    application:
+    active_mode: false
+
+  #
+  # always try to deploy here
+  #
+  - provider: GitHub
+    release: 0.0.0.0.0.GITHUBCACHE
+    draft: false
+    prerelease: false
+    artifact: r_7z
+    auth_token:
+      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
+    # non - "branch, tag, or commit" will still be expected "false" ( githubcache != true )
+    # and never find a r-*.7z to deploy - and that is OK.
+
+  #
+  # second, last of Github deployments, to try to appear as "latest"
+  #
+  - provider: GitHub
+    release: $(APPVEYOR_REPO_TAG_NAME)
+    draft: false
+    prerelease: false
+    artifact: r_7z
+    auth_token:
+      secure: KzS1DumC2yBg2LGN9x3AemHFOjAdp+rD58rW5aGGpwW4Pfdwdm7AmRpYKprPY8Gs
+    on:
+      APPVEYOR_REPO_TAG: true
+
