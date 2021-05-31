@@ -85,11 +85,11 @@ then
     loginfo "BEGIN R BUILD"
     if [ "${Configuration}" == "Release" ]
     then
-      make
+      make USE_ATLAS=YES
     fi
     if [ "${Configuration}" == "Debug" ]
     then
-      make DEBUG=T
+      make DEBUG=T USE_ATLAS=YES 
     fi
     loginfo "END   R BUILD"
     loginfo "BEGIN R INSTALL"
