@@ -176,8 +176,7 @@ for:
   - pushd "c:\projects"
   - move  "R-%r%" "r"
   - popd
-  - dir   "c:\projects\r"
- 
+
   # https://cygwin.com/faq/faq.html#faq.setup.cli
 
   # environment of cygwin
