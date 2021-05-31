@@ -94,11 +94,11 @@ then
     #
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure --enable-R-shlib "CFLAGS=-L /usr/lib -l bz2"                           --prefix=${rroot}
+      ./configure --disable-rpath --enable-java=no --enable-R-shlib "CFLAGS=-L /usr/lib -lbz2"                                                --prefix=${rroot}
     fi
     if [ "${Configuration}" == "Debug" ]
     then
-      ./configure --enable-R-shlib "CFLAGS=-L /usr/lib -l bz2" --enable-memory-profiling --prefix=${rroot}
+      ./configure --disable-rpath --enable-java=no --enable-R-shlib "CFLAGS=-L /usr/lib -lbz2" --enable-memory-profiling --enable-R-profiling --prefix=${rroot}
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
