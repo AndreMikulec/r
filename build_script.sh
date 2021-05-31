@@ -62,6 +62,10 @@ then
   if [ ! -f "r-r${rversion}-${Platform}-${Configuration}-${compiler}.7z" ]
   then
     loginfo "BEGIN R CONFIGURE"
+    #
+    # see configure options
+    ./configure --help
+    #
     # all cases - better
     sed -i -e "s/-gdwarf-2/--enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer/" ${rsource}/src/gnuwin32/fixed/etc/Makeconf
     # better debugging
