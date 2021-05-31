@@ -215,7 +215,7 @@ for:
   # configure: error: --with-readline=yes (default) and headers/libs are not available
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libreadline-devel
   # configure: error: --with-x=yes (default) and X11 headers/libs are not available
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libX11-devel
+  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libXt-devel
   # needs a modification (FUTURE)
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P qpdf
   # needs a modification (FUTURE)
