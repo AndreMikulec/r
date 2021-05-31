@@ -82,8 +82,10 @@ then
     # --enable-R-shlib
     # https://github.com/postgres-plr/plr/blob/master/userguide.md
     #
-    # EXPLICIT ADDITIONAL FLAGS (LEFT OFF)
+    # EXPLICIT ADDITIONAL FLAGS
     # https://stackoverflow.com/questions/62226472/why-doesnt-my-gcc-compiler-recognize-the-bzip2-functions-yet-allows-me-to-incl
+    #
+    # https://unix.stackexchange.com/questions/149359/what-is-the-correct-syntax-to-add-cflags-and-ldflags-to-configure/149361
     #
     cd ${rsource}
     #
@@ -92,11 +94,11 @@ then
     #
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure --enable-R-shlib "CFLAGS=-L /usr/lib -l bz2"   --prefix=${rroot}
+      ./configure --enable-R-shlib "CFLAGS=-L /usr/lib -l bz2"                           --prefix=${rroot}
     fi
     if [ "${Configuration}" == "Debug" ]
     then
-      ./configure --enable-R-shlib --enable-memory-profiling --prefix=${rroot}
+      ./configure --enable-R-shlib "CFLAGS=-L /usr/lib -l bz2" --enable-memory-profiling --prefix=${rroot}
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
