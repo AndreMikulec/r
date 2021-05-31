@@ -77,7 +77,7 @@ then
     sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/src/extra/blas/Makefile.win
     #
     # UNVERIFIED # I WILL FIX THIS LATER
-    echo "QPDF = /lib/" >> ${rsource}/src/gnuwin32/MkRules.local
+    echo "QPDF = /usr/lib/" >> ${rsource}/src/gnuwin32/MkRules.local
     #
     # https://stackoverflow.com/questions/51364034/how-can-i-install-r-in-linux-server-when-i-run-the-configure-command-i-am-get
     # 
