@@ -62,19 +62,35 @@ then
   if [ ! -f "r-r${rversion}-${Platform}-${Configuration}-${compiler}.7z" ]
   then
     loginfo "BEGIN R CONFIGURE"
+    # all cases - better
+    sed -i -e "s/-gdwarf-2/--enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer/" ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    # better debugging
+    cp ${rsource}/src/gnuwin32/MkRules.dist                                         ${rsource}/src/gnuwin32/MkRules.local
+    echo "G_FLAG = --enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer"       >> ${rsource}/src/gnuwin32/MkRules.local
+    #
+    # if I want to use openblas
+    sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/configure
+    sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/src/extra/blas/Makefile.win
+    #
     cd ${rsource}
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure                                                                 --prefix=${rroot}
+      ./configure                          --prefix=${rroot}
     fi
-    # needs a modification (FUTURE)
     if [ "${Configuration}" == "Debug" ]
     then
-      ./configure --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --prefix=${rroot}
+      ./configure                          --prefix=${rroot}
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
-    make -j 1 -O
+    if [ "${Configuration}" == "Release" ]
+    then
+      make
+    fi
+    if [ "${Configuration}" == "Debug" ]
+    then
+      make DEBUG=T
+    fi
     loginfo "END   R BUILD"
     loginfo "BEGIN R INSTALL"
     make install
