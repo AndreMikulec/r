@@ -212,6 +212,8 @@ for:
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libcairo-devel
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P tcl-tk-devel
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P curl
+  # configure: error: --with-readline=yes (default) and headers/libs are not available
+  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libreadline-devel
   # needs a modification (FUTURE)
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P qpdf
   # needs a modification (FUTURE)
