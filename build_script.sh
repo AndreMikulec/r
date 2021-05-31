@@ -67,6 +67,7 @@ then
     then
       ./configure                                                                 --prefix=${rroot}
     fi
+    # needs a modification (FUTURE)
     if [ "${Configuration}" == "Debug" ]
     then
       ./configure --enable-cassert CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --prefix=${rroot}
