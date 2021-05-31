@@ -208,7 +208,7 @@ for:
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libtiff-devel
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libjpeg-devel -P libpng16-devel
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpcre2-devel
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P xz  
+  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P liblzma-devel 
   # https://stackoverflow.com/questions/42076936/zlib-bz2-library-and-headers-are-requried-for-compiling-r
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libbz2-dev -P liblzma-dev -P libpcre2-devel -P liblzma-dev
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P zlib-devel
