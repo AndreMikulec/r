@@ -27,17 +27,13 @@ environment:
     Platform: x64
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     compiler: cygwin
-    #
-    githubcache: true
 
-  - r: 4.1.0 # stable from source tarball
-    PlatformToolset: v142
-    Configuration: Debug
-    Platform: x86
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    compiler: cygwin
-    #
-    githubcache: true
+#   - r: 4.1.0 # stable from source tarball
+#     PlatformToolset: v142
+#     Configuration: Debug
+#     Platform: x86
+#     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#     compiler: cygwin
 
 for:
 -
