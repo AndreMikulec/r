@@ -174,7 +174,7 @@ for:
   
   - dir   "c:\projects"
   - pushd "c:\projects"
-  - xcopy "R-%r%"\* r\ /E /H /Q  2>null
+  - xcopy "R-%r%"\* r /E /H /Q  2>null
   - popd
   - dir   "c:\projects\r"
  
