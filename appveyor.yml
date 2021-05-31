@@ -21,7 +21,7 @@ environment:
 
   matrix:
 
-  - r: tags/R-4-1-0 # volatile commit - from git
+  - r: 4.1.0 # stable from source tarball
     PlatformToolset: v142
     Configuration: Debug
     Platform: x64
@@ -30,7 +30,7 @@ environment:
     #
     githubcache: true
 
-  - r: tags/R-4-1-0 # volatile commit - from git
+  - r: 4.1.0 # stable from source tarball
     PlatformToolset: v142
     Configuration: Debug
     Platform: x86
@@ -163,47 +163,17 @@ for:
   - if not defined rgithubbincacheextracted set rgithubbincacheextracted=false
   - echo rgithubbincacheextracted %rgithubbincacheextracted%
 
- #
-  # R from source code: git, tag, or commit
   #
-  - ps: |
-      # Set-PSDebug -Trace 2
-      if (("${env:rgithubbincacheextracted}" -eq "false") -and ("${env:r}" -ne "none")) {
-        git config --global advice.detachedHead false
-        $env:PATH += ";C:\msys64\usr\bin;C:\msys64\mingw64\bin;C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\amd64"
-        #
-        # commit - alphanumeric and all lowercase letters (slower download)
-        #
-        if("${env:rhint}" -eq "commit") {
-          git clone -q                            https://github.com/wch/r-source.git c:\projects\r
-          pwd
-          pushd c:\projects\r
-          pwd
-          git checkout -q                 ${env:r} -b ${env:r}
-          git branch
-          echo ${env:r}
-          popd
-          pwd
-        #
-        # git branch or tag(detached head)
-        # R case - git branches and tags have at least one capital letter - but expect mostly CAPS
-        #
-        } else {
-          git clone -q --depth 1 --branch ${env:r} https://github.com/wch/r-source.git c:\projects\r
-          pushd c:\projects\r
-          pwd
-          git branch
-          echo ${env:r}
-          popd
-          pwd
-        }
-        pushd c:\projects\r
-        pwd
-        echo "Files . . ."
-        $Table = Get-ChildItem
-        foreach ($Row in $Table) { $Row.Name }
-        popd
-      }
+  # R from source tarball (future: from "svn")
+  #
+  
+  - mkdir "c:\projects\r"
+  - if not %r%=="none" curl -o "R-version.tar.gz" -L "https://cran.r-project.org/src/base/R-4/R-%r%.tar.gz"
+  #
+  # https://superuser.com/questions/80019/how-can-i-unzip-a-tar-gz-in-one-step-using-7-zip
+  #
+  - if not %r%=="none" 7z x "R-version.tar.gz" -so | 7z x -aoa -si -ttar -o"c:\projects\r
+    
   # https://cygwin.com/faq/faq.html#faq.setup.cli
 
   # environment of cygwin
