@@ -172,10 +172,11 @@ for:
   #
   - if not %r%=="none" 7z x "R-version.tar.gz" -so | 7z x -aoa -si -ttar -o"c:\projects"
   
-  - dir  "c:\projects"
+  - dir   "c:\projects"
   - pushd "c:\projects"
-  - xcopy "R-%r%"\* r\ /E /H   2>null
+  - xcopy "R-%r%"\* r\ /E /H /Q  2>null
   - popd
+  - dir   "c:\projects\r"
  
   # https://cygwin.com/faq/faq.html#faq.setup.cli
 
