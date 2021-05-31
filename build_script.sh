@@ -73,7 +73,7 @@ then
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
-    make
+    make -j 1 -O
     loginfo "END   R BUILD"
     loginfo "BEGIN R INSTALL"
     make install
