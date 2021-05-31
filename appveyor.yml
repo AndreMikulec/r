@@ -98,7 +98,6 @@ for:
   - if not defined githubcache     set githubcache=false
   - if not defined rhint           set rhint=none
   - if not defined r               set r=none
-  - if not defined rlinkbinoldurl  set rlinkbinoldurl=none
 
   install:
   - echo compiler cygwin install
