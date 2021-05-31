@@ -96,7 +96,6 @@ for:
   # (for now, keep this area to be the same as "msys2" and NOT ALL "msys2" FEATURES are implemented)
   #
   - if not defined githubcache     set githubcache=false
-  - if not defined rhint           set rhint=none
   - if not defined r               set r=none
 
   install:
