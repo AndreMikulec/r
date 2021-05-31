@@ -63,9 +63,6 @@ then
   then
     loginfo "BEGIN R CONFIGURE"
     #
-    # see configure options
-    ./configure --help
-    #
     # all cases - better
     sed -i -e "s/-gdwarf-2/--enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer/" ${rsource}/src/gnuwin32/fixed/etc/Makeconf
     # better debugging
@@ -82,12 +79,20 @@ then
     # https://stackoverflow.com/questions/51364034/how-can-i-install-r-in-linux-server-when-i-run-the-configure-command-i-am-get
     # 
     # Compiling from source
+    # --enable-R-shlib
     # https://github.com/postgres-plr/plr/blob/master/userguide.md
     #
+    # EXPLICIT ADDITIONAL FLAGS (LEFT OFF)
+    # https://stackoverflow.com/questions/62226472/why-doesnt-my-gcc-compiler-recognize-the-bzip2-functions-yet-allows-me-to-incl
+    #
     cd ${rsource}
+    #
+    # see configure options
+    ./configure --help
+    #
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure --enable-R-shlib                           --prefix=${rroot}
+      ./configure --enable-R-shlib "CFLAGS=-L /usr/lib -l bz2"   --prefix=${rroot}
     fi
     if [ "${Configuration}" == "Debug" ]
     then
