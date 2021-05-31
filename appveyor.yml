@@ -171,6 +171,7 @@ for:
   # https://superuser.com/questions/80019/how-can-i-unzip-a-tar-gz-in-one-step-using-7-zip
   #
   - if not %r%=="none" 7z x "R-version.tar.gz" -so | 7z x -aoa -si -ttar -o"c:\projects\r
+  - dir "c:\projects\r"
     
   # https://cygwin.com/faq/faq.html#faq.setup.cli
 
@@ -180,6 +181,7 @@ for:
   # https://github.com/petere/postgresql/blob/c3606de647583d7cbb39aadd2a2a989af28b97ea/.appveyor.yml
   # https://ci.appveyor.com/project/petere/postgresql/builds/37986514
 
+  - 'appveyor DownloadFile http://cygwin.com/setup-%CYG_ARCH%.exe -FileName setup.exe'
   #
   # to archive and un-archive (7z)
   - 'setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P p7zip'
