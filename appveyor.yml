@@ -173,9 +173,7 @@ for:
   - if exist "c:\projects\r" rmdir "c:\projects\r" /S /Q
   - if not %r%=="none" 7z x "R-version.tar.gz" -so | 7z x -aoa -si -ttar -o"c:\projects"
   - dir   "c:\projects"
-  - pushd "c:\projects"
-  - move  "R-%r%" "r"
-  - popd
+  - move  "c:\projects\R-%r%" "c:\projects\r"
 
   # https://cygwin.com/faq/faq.html#faq.setup.cli
 
