@@ -170,11 +170,11 @@ for:
   #
   # https://superuser.com/questions/80019/how-can-i-unzip-a-tar-gz-in-one-step-using-7-zip
   #
+  - if exist "c:\projects\r" rmdir "c:\projects\r" /S /Q
   - if not %r%=="none" 7z x "R-version.tar.gz" -so | 7z x -aoa -si -ttar -o"c:\projects"
-  
   - dir   "c:\projects"
   - pushd "c:\projects"
-  - xcopy "R-%r%"\* r /E /H /Q  2>null
+  - move  "R-%r%" "r"
   - popd
   - dir   "c:\projects\r"
  
