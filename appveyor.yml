@@ -165,12 +165,13 @@ for:
   # R from source tarball (future: from "svn")
   #
   
-  - mkdir "c:\projects\r"
+  - set rsource=c:\projects\r
+  - mkdir "%rsource%"
   - if not %r%=="none" curl -o "R-version.tar.gz" -L "https://cran.r-project.org/src/base/R-4/R-%r%.tar.gz"
   #
   # https://superuser.com/questions/80019/how-can-i-unzip-a-tar-gz-in-one-step-using-7-zip
   #
-  - if exist "c:\projects\r" rmdir "c:\projects\r" /S /Q
+  - if exist "%rsource%" rmdir "c:\projects\r" /S /Q
   - if not %r%=="none" 7z x "R-version.tar.gz" -so | 7z x -aoa -si -ttar -o"c:\projects"
   - dir   "c:\projects"
   - move  "c:\projects\R-%r%" "c:\projects\r"
@@ -243,8 +244,8 @@ for:
 artifacts:
 - path: 'r-*.7z'
   name: r_7z
-- path: '%rsource%\src\gnuwin32\*.log'
-  name: logs
+- path: '%rsource%\*.log'
+  name: configlog
 
 deploy:
 
@@ -295,3 +296,5 @@ deploy:
     on:
       APPVEYOR_REPO_TAG: true
 
+on_finish:
+  - appveyor PushArtifact configlog

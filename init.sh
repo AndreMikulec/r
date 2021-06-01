@@ -47,7 +47,7 @@ loginfo "R_HOME ${R_HOME}"
 # is only used about a custom PostgreSQL build (not an MSYS2 or CYGWIN already compiled binary)
 # 
 
-export rsource=$(cygpath "c:\projects\r")
+export rsource=$(cygpath "${rsource}")
 loginfo "rsource ${rsource}"
 
 export APPVEYOR_BUILD_FOLDER=$(cygpath "${APPVEYOR_BUILD_FOLDER}")
