@@ -244,8 +244,6 @@ for:
 artifacts:
 - path: 'r-*.7z'
   name: r_7z
-- path: '%rsource%\*.log'
-  name: configlog
 
 deploy:
 
@@ -297,4 +295,4 @@ deploy:
       APPVEYOR_REPO_TAG: true
 
 on_finish:
-  - appveyor PushArtifact configlog
+  - appveyor PushArtifact %rsource%\*.log
