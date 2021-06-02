@@ -94,11 +94,11 @@ then
     #
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure --disable-rpath --enable-java=no --enable-R-shlib "CFLAGS=-L /usr/lib -lbz2"                                                --prefix=${rroot} 2>&1 | tee config_interactive.log
+      ./configure "LDFLAGS=-L /usr/lib -lbz2" --disable-rpath --enable-java=no --enable-R-shlib                                                 --prefix=${rroot} 2>&1 | tee config_interactive.log
     fi
-    if [ "${Configuration}" == "Debug" ]
+    if [ "${Configuration}" == "Debug" ] 
     then
-      ./configure --disable-rpath --enable-java=no --enable-R-shlib "CFLAGS=-L /usr/lib -lbz2" --enable-memory-profiling --enable-R-profiling --prefix=${rroot} 2>&1 | tee config_interactive.log
+      ./configure "LDFLAGS=-L /usr/lib -lbz2" --disable-rpath --enable-java=no --enable-R-shlib --enable-memory-profiling --enable-R-profiling --prefix=${rroot} 2>&1 | tee config_interactive.log
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
