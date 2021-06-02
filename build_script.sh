@@ -127,6 +127,31 @@ then
       # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
       # without (almost) everything
       ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log
+      #
+      # R is now configured for x86_64-pc-cygwin
+      #   Source directory:            .
+      #   Installation directory:      /cygdrive/c/RINSTALL
+      #   C compiler:                  gcc  -g -O2
+      #   Fortran fixed-form compiler: gfortran -fno-optimize-sibling-calls -g -O2
+      #   Default C++ compiler:        g++ -std=gnu++14  -g -O2
+      #   C++11 compiler:              g++ -std=gnu++11  -g -O2
+      #   C++14 compiler:              g++ -std=gnu++14  -g -O2
+      #   C++17 compiler:              g++ -std=gnu++17  -g -O2
+      #   C++20 compiler:              g++ -std=gnu++20  -g -O2
+      #   Fortran free-form compiler:  gfortran -fno-optimize-sibling-calls -g -O2
+      #   Obj-C compiler:	        
+      #   Interfaces supported:        
+      #   External libraries:          pcre2, curl
+      #   Additional capabilities:     NLS
+      #   Options enabled:             
+      #   Capabilities skipped:        PNG, JPEG, TIFF, cairo, ICU
+      #   Options not enabled:         shared BLAS, R profiling, memory profiling
+      #   Recommended packages:        no
+      # configure: WARNING: you cannot build PDF versions of the R manuals
+      # configure: WARNING: you cannot build PDF versions of vignettes and help pages
+      # configure: WARNING: I could not determine a browser
+      # configure: WARNING: I could not determine a PDF viewer
+      #
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
@@ -138,6 +163,8 @@ then
     then
       # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#How-do-I-debug-code-that-I-have-compiled-and-dyn_002eload_002ded_003f
       make DEBUG=T USE_ATLAS=YES 
+      # failing to pickup my debugging and flags
+      #
     fi
     loginfo "END   R BUILD"
     loginfo "BEGIN R INSTALL"
