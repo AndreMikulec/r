@@ -164,12 +164,12 @@ then
     loginfo "BEGIN R BUILD"
     if [ "${Configuration}" == "Release" ]
     then
-      make USE_ATLAS=YES
+      make USE_ATLAS=YES ATLAS_PATH=/use/lib/
     fi
     if [ "${Configuration}" == "Debug" ]
     then
       # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#How-do-I-debug-code-that-I-have-compiled-and-dyn_002eload_002ded_003f
-      make DEBUG=T USE_ATLAS=YES 
+      make USE_ATLAS=YES ATLAS_PATH=/use/lib/ DEBUG=T 
       # failing to pickup my debugging and flags
       #
     fi
