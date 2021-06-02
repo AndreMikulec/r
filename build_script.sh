@@ -65,16 +65,28 @@ then
     #
     # all cases - better
     sed -i -e "s/-gdwarf-2/--enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer/" ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    loginfo                                                                    "cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf"
+                                                                                cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    
     # better debugging
     cp ${rsource}/src/gnuwin32/MkRules.dist                                         ${rsource}/src/gnuwin32/MkRules.local
     echo "G_FLAG = --enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer"       >> ${rsource}/src/gnuwin32/MkRules.local
+    loginfo                                                                    "cat ${rsource}/src/gnuwin32/MkRules.local"
+                                                                                cat ${rsource}/src/gnuwin32/MkRules.local
     #
     # if I want to use openblas
     sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/configure
+    loginfo                               cat "${rsource}/configure"
+                                          cat  ${rsource}/configure
+    #
     sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/src/extra/blas/Makefile.win
+    loginfo                              "cat ${rsource}/src/extra/blas/Makefile.win"
+                                          cat ${rsource}/src/extra/blas/Makefile.win
     #
     # UNVERIFIED # I WILL FIX THIS LATER
     echo "QPDF = /usr/lib/" >> ${rsource}/src/gnuwin32/MkRules.local
+    loginfo               "cat ${rsource}/src/gnuwin32/MkRules.local"
+                           cat ${rsource}/src/gnuwin32/MkRules.local
     #
     # https://stackoverflow.com/questions/51364034/how-can-i-install-r-in-linux-server-when-i-run-the-configure-command-i-am-get
     # 
