@@ -94,19 +94,28 @@ then
     # see configure options
     ./configure --help
     #
+    #
+    # without: "LDFLAGS=-L /usr/lib -l bz2"
+    # checking for BZ2_bzlibVersion in -lbz2... no
+    # checking whether bzip2 support suffices... configure: error: bzip2 library and headers are required
+    #
+    # with: "LDFLAGS=-L /usr/lib -l bz2"
+    # configure: error: C compiler cannot create executables
+    #   
     if [ "${Configuration}" == "Release" ]
     then
     # "LDFLAGS=-L /usr/lib -l bz2"
       # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
       # without everything
-      ./configure  --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-pcre2 --without-pcre1 --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log 
+      ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-pcre2 --without-pcre1 --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log 
     fi
     if [ "${Configuration}" == "Debug" ] 
     then
+    ## NO DIFFERENT THAN Release: later "make DEBUG=T"
     # "LDFLAGS=-L /usr/lib -l bz2"
-      # ./configure CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --disable-rpath --enable-java=no --enable-R-shlib --enable-memory-profiling --enable-R-profiling --prefix=${rroot} 2>&1 | tee config_interactive.log
+      # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
       # without everything
-      ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-pcre2 --without-pcre1 --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log
+      ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-pcre2 --without-pcre1 --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log 
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
