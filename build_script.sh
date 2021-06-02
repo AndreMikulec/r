@@ -55,6 +55,19 @@ then
   loginfo "which R $(which R)"
 fi
 
+#
+# Package: R
+# https://cygwin.com/packages/summary/R.html
+# 
+# maintainer(s): Marco Atzeri (Use the mailing list to report bugs or ask questions
+#
+# Marco Atzeri via Cygwin-announce cygwin-announce@cygwin.com
+# Fri May 28 13:22:34 GMT 2021
+# https://cygwin.com/pipermail/cygwin/2021-May/248616.html
+#
+# [Rd] R 4.1.0 is released
+# https://mailman.stat.ethz.ch/pipermail/r-announce/2021/000670.html
+#
 
 if [ "${rgithubbincacheextracted}" == "false" ] && [ ! "${r}" == "none" ]
 then
