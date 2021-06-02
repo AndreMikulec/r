@@ -227,6 +227,16 @@ for:
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpcre2-devel
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P liblzma-devel 
   #
+  # -P libbz2-devel
+  # 
+  # checking whether zlib support suffices... yes
+  # checking for BZ2_bzlibVersion in -lbz2... yes
+  # checking bzlib.h usability... yes
+  # checking bzlib.h presence... yes
+  # checking for bzlib.h... yes
+  # checking if bzip2 version >= 1.0.6... yes
+  # checking whether bzip2 support suffices... yes
+  #
   # https://stackoverflow.com/questions/48633466/cannot-find-bzip2-library-on-cygwin-64-on-win764
   # https://stackoverflow.com/questions/42076936/zlib-bz2-library-and-headers-are-requried-for-compiling-r
   #
