@@ -87,6 +87,8 @@ then
     #
     # https://unix.stackexchange.com/questions/149359/what-is-the-correct-syntax-to-add-cflags-and-ldflags-to-configure/149361
     #
+    # https://github.com/AndreMikulec/plr/blob/1d57ca52b03dde8f7d32d9bb96c1ea45f011e4af/build_script.sh#L40
+    #
     cd ${rsource}
     #
     # see configure options
@@ -94,11 +96,17 @@ then
     #
     if [ "${Configuration}" == "Release" ]
     then
-      ./configure "LDFLAGS=-L /usr/lib -lbz2" --disable-rpath --enable-java=no --enable-R-shlib                                                 --prefix=${rroot} 2>&1 | tee config_interactive.log
+    # "LDFLAGS=-L /usr/lib -l bz2"
+      # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
+      # without everything
+      ./configure  --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-pcre2 --without-pcre1 --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log 
     fi
     if [ "${Configuration}" == "Debug" ] 
     then
-      ./configure "LDFLAGS=-L /usr/lib -lbz2" --disable-rpath --enable-java=no --enable-R-shlib --enable-memory-profiling --enable-R-profiling --prefix=${rroot} 2>&1 | tee config_interactive.log
+    # "LDFLAGS=-L /usr/lib -l bz2"
+      # ./configure CFLAGS="-ggdb -Og -g3 -fno-omit-frame-pointer" --disable-rpath --enable-java=no --enable-R-shlib --enable-memory-profiling --enable-R-profiling --prefix=${rroot} 2>&1 | tee config_interactive.log
+      # without everything
+      ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-pcre2 --without-pcre1 --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
