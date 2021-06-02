@@ -111,7 +111,10 @@ then
     fi
     if [ "${Configuration}" == "Debug" ] 
     then
-    ## NO DIFFERENT THAN Release: later "make DEBUG=T"
+    ##
+    ## NO DIFFERENT THAN "Release": later "make DEBUG=T"
+    ## https://cran.r-project.org/bin/windows/base/rw-FAQ.html#How-do-I-debug-code-that-I-have-compiled-and-dyn_002eload_002ded_003f
+    ##
     # "LDFLAGS=-L /usr/lib -l bz2"
       # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
       # without everything
@@ -125,6 +128,7 @@ then
     fi
     if [ "${Configuration}" == "Debug" ]
     then
+      # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#How-do-I-debug-code-that-I-have-compiled-and-dyn_002eload_002ded_003f
       make DEBUG=T USE_ATLAS=YES 
     fi
     loginfo "END   R BUILD"
