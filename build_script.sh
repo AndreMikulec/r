@@ -112,10 +112,17 @@ then
     # defaults:
     # --with-pcre2
     #
+    # see them all
+    loginfo "export"
+    export
+    # make sure all my (new) files are where they should be
+    loginfo "find ${rsource} -type f -print"
+    find ${rsource} -type f -print
+    #
     if [ "${Configuration}" == "Release" ]
     then
       # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
-      # without (almost) everything
+      # without (almost) everything and doing (--disable-rpath)
       ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log 
     fi
     if [ "${Configuration}" == "Debug" ] 
@@ -125,8 +132,8 @@ then
     ## https://cran.r-project.org/bin/windows/base/rw-FAQ.html#How-do-I-debug-code-that-I-have-compiled-and-dyn_002eload_002ded_003f
     ##
       # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
-      # without (almost) everything
-      ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log
+      # without (almost) everything and doing (--disable-rpath)
+      ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no  --without-readline --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log
       #
       # R is now configured for x86_64-pc-cygwin
       #   Source directory:            .

@@ -255,10 +255,22 @@ for:
   # needs a modification (FUTURE)
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libopenblas
 
+  # gcc -I../../src/extra -I../../src/extra/xdr -I. -I../../src/include -I../../src/include  -I/usr/local/include -I../../src/nmath -DHAVE_CONFIG_H   -fopenmp  -g -O2  -c platform.c -o platform.o
+  # platform.c:3263:10: fatal error: iconv.h: No such file or directory
+  # 3263 | #include <iconv.h>
+  #      |          ^~~~~~~~~
+  # compilation terminated.
+  #
+  # https://cygwin.com/packages/x86_64/libiconv-devel/libiconv-devel-1.16-2
+  #
+  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libiconv-devel
+
   build_script:
   # override
   - set R_HOME=%CYG_ROOT%\lib%rbit%\R
   #
+  # see them all
+  - set
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/build_script.sh"
 
   after_build:
@@ -266,7 +278,6 @@ for:
 
   test_script:
   - bash --login -c "$(cygpath ${APPVEYOR_BUILD_FOLDER})/test_script.sh"
-
 
 artifacts:
 - path: 'r-*.7z'
@@ -322,8 +333,8 @@ deploy:
       APPVEYOR_REPO_TAG: true
 
 on_failure:
-  - appveyor PushArtifact %rsource%\*.log
+  - appveyor PushArtifact %rsource%\config.status
 
 # includes on_success on_failure
 on_finish:
-  - appveyor PushArtifact %rsource%\*.log
+  - appveyor PushArtifact %rsource%\config.status
