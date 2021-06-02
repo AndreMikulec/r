@@ -135,7 +135,7 @@ then
     then
       # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
       # without (almost) everything and doing (--disable-rpath)
-      ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log 
+      # ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no --disable-rpath --without-readline --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log 
     fi
     if [ "${Configuration}" == "Debug" ] 
     then
@@ -145,7 +145,7 @@ then
     ##
       # ./configure "LDFLAGS=-L /usr/lib -l bz2" --disable-rpath --enable-java=no --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
       # without (almost) everything and doing (--disable-rpath)
-      ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no  --without-readline --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log
+      # ./configure --enable-R-profiling=no --enable-BLAS-shlib=no --enable-java=no --enable-byte-compiled-packages=no --enable-shared=no --enable-fast-install=no --enable-long-double=no  --without-readline --without-tcltk --without-cairo --without-libpng --without-jpeglib --without-libtiff --without-internal-wcwidth --without-recommended-packages --without-ICU --without-sysroot --without-x --without-libpth-prefix --without-libintl-prefix --prefix=${rroot} 2>&1 | tee config_interactive.log
       #
       # R is now configured for x86_64-pc-cygwin
       #   Source directory:            .
@@ -171,6 +171,11 @@ then
       # configure: WARNING: I could not determine a browser
       # configure: WARNING: I could not determine a PDF viewer
       #
+      #
+      # undefined references everywhere - try compiling with near-default
+      #
+      ./configure --disable-rpath --enable-R-shlib --prefix=${rroot} 2>&1 | tee config_interactive.log
+      
     fi
     loginfo "END   R CONFIGURE"
     loginfo "BEGIN R BUILD"
