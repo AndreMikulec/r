@@ -358,17 +358,17 @@ then
     loginfo                                                                    "cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf | grep ggdb"
                                                                                 cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf | grep ggdb
 
-    echo -e "\n"                                 >> ${rsource}/gnuwin32/fixed/etc/Makeconf
-    echo '$(info $$DEBUG is [${DEBUG}])'         >> ${rsource}/gnuwin32/fixed/etc/Makeconf
-    echo -e "\n"                                 >> ${rsource}/gnuwin32/fixed/etc/Makeconf
-    echo '$(info $$DEBUGFLAG is [${DEBUGFLAG}])' >> ${rsource}/gnuwin32/fixed/etc/Makeconf
-    echo -e "\n"                                 >> ${rsource}/gnuwin32/fixed/etc/Makeconf
+    echo -e "\n"                                 >> ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    echo '$(info $$DEBUG is [${DEBUG}])'         >> ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    echo -e "\n"                                 >> ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    echo '$(info $$DEBUGFLAG is [${DEBUGFLAG}])' >> ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    echo -e "\n"                                 >> ${rsource}/src/gnuwin32/fixed/etc/Makeconf
 
 
     # better debugging
     cp ${rsource}/src/gnuwin32/MkRules.dist                                         ${rsource}/src/gnuwin32/MkRules.local
     echo -e                                                                 "\n" >> ${rsource}/src/gnuwin32/MkRules.local
-    echo "G_FLAG = -ggdb -Og -g3 -fno-omit-frame-pointer"       >> ${rsource}/src/gnuwin32/MkRules.local
+    echo "G_FLAG = -ggdb -Og -g3 -fno-omit-frame-pointer"                        >> ${rsource}/src/gnuwin32/MkRules.local
     echo -e                                                                 "\n" >> ${rsource}/src/gnuwin32/MkRules.local
     loginfo                                                                   "tail ${rsource}/src/gnuwin32/MkRules.local"
                                                                                tail ${rsource}/src/gnuwin32/MkRules.local
