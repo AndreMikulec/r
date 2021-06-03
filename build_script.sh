@@ -354,7 +354,7 @@ then
     loginfo "BEGIN R CONFIGURE"
     #
     # all cases - better
-    sed -i -e "s/-gdwarf-2/--enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer/" ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    sed -i -e "s/-gdwarf-2/-ggdb -Og -g3 -fno-omit-frame-pointer/" ${rsource}/src/gnuwin32/fixed/etc/Makeconf
     loginfo                                                                    "cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf | grep ggdb"
                                                                                 cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf | grep ggdb
 
@@ -368,7 +368,7 @@ then
     # better debugging
     cp ${rsource}/src/gnuwin32/MkRules.dist                                         ${rsource}/src/gnuwin32/MkRules.local
     echo -e                                                                 "\n" >> ${rsource}/src/gnuwin32/MkRules.local
-    echo "G_FLAG = --enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer"       >> ${rsource}/src/gnuwin32/MkRules.local
+    echo "G_FLAG = -ggdb -Og -g3 -fno-omit-frame-pointer"       >> ${rsource}/src/gnuwin32/MkRules.local
     echo -e                                                                 "\n" >> ${rsource}/src/gnuwin32/MkRules.local
     loginfo                                                                   "tail ${rsource}/src/gnuwin32/MkRules.local"
                                                                                tail ${rsource}/src/gnuwin32/MkRules.local
