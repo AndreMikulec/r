@@ -78,28 +78,29 @@ then
     #
     # all cases - better
     sed -i -e "s/-gdwarf-2/--enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer/" ${rsource}/src/gnuwin32/fixed/etc/Makeconf
-    loginfo                                                                    "cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf"
-                                                                                cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf
+    loginfo                                                                    "cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf | grep ggdb"
+                                                                                cat ${rsource}/src/gnuwin32/fixed/etc/Makeconf | grep ggdb
     
     # better debugging
     cp ${rsource}/src/gnuwin32/MkRules.dist                                         ${rsource}/src/gnuwin32/MkRules.local
     echo "G_FLAG = --enable-cassert -ggdb -Og -g3 -fno-omit-frame-pointer"       >> ${rsource}/src/gnuwin32/MkRules.local
-    loginfo                                                                    "cat ${rsource}/src/gnuwin32/MkRules.local"
-                                                                                cat ${rsource}/src/gnuwin32/MkRules.local
+    loginfo                                                                   "tail ${rsource}/src/gnuwin32/MkRules.local"
+                                                                               tail ${rsource}/src/gnuwin32/MkRules.local
     #
-    # if I want to use openblas
-    sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/configure
-    loginfo                               cat "${rsource}/configure"
-                                          cat  ${rsource}/configure
+    #  # if I want to use openblas
+    #  sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/configure
+    #  loginfo                               cat "${rsource}/configure | grep openblas"
+    #                                        cat  ${rsource}/configure | grep openblas
+    #  #
+    #  sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/src/extra/blas/Makefile.win
+    #  loginfo                               "cat ${rsource}/src/extra/blas/Makefile.win | grep openblas"
+    #                                         cat ${rsource}/src/extra/blas/Makefile.win | grep openblas
     #
-    sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/src/extra/blas/Makefile.win
-    loginfo                              "cat ${rsource}/src/extra/blas/Makefile.win"
-                                          cat ${rsource}/src/extra/blas/Makefile.win
-    #
+    
     # UNVERIFIED # I WILL FIX THIS LATER
     echo "QPDF = /usr/lib/" >> ${rsource}/src/gnuwin32/MkRules.local
-    loginfo               "cat ${rsource}/src/gnuwin32/MkRules.local"
-                           cat ${rsource}/src/gnuwin32/MkRules.local
+    loginfo               "cat ${rsource}/src/gnuwin32/MkRules.local grep QPDF"
+                           cat ${rsource}/src/gnuwin32/MkRules.local grep QPDF
     #
     # https://stackoverflow.com/questions/51364034/how-can-i-install-r-in-linux-server-when-i-run-the-configure-command-i-am-get
     # 
@@ -141,8 +142,9 @@ then
     loginfo "export"
     export
     # make sure all my (new) files are where they should be
-    loginfo "find ${rsource} -type f -print"
-    find ${rsource} -type f -print
+    # TOO MUCH OUTPUT
+    # loginfo "find ${rsource} -type f -print"
+    # find ${rsource} -type f -print
     #
     if [ "${Configuration}" == "Release" ]
     then
@@ -194,12 +196,14 @@ then
     loginfo "BEGIN R BUILD"
     if [ "${Configuration}" == "Release" ]
     then
-      make USE_ATLAS=YES ATLAS_PATH=/use/lib/
+      # make USE_ATLAS=YES ATLAS_PATH=/use/lib/
+      make
     fi
     if [ "${Configuration}" == "Debug" ]
     then
       # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#How-do-I-debug-code-that-I-have-compiled-and-dyn_002eload_002ded_003f
-      make USE_ATLAS=YES ATLAS_PATH=/use/lib/ DEBUG=T 
+      # make USE_ATLAS=YES ATLAS_PATH=/use/lib/ DEBUG=T 
+      make DEBUG=T
       # failing to pickup my debugging and flags
       #
     fi
