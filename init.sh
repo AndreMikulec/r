@@ -36,6 +36,11 @@ logerr() {
 
 logok "BEGIN init.sh"
 
+#
+# cygwin is not-to-inherit the Windows PATH
+#
+export PATH=/usr/local/bin:/usr/bin
+
 
 loginfo "uname -a $(uname -a)"
 

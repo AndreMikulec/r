@@ -92,19 +92,6 @@ for:
       }
 
   #
-  # cygwin is not-to-inherit the Windows PATH
-  #
-  # C:\cygwin\etc\profile
-  # C:\cygwin64\etc\profile
-  # 
-  - echo "export PATH=/usr/local/bin:/usr/bin" >> %CYG_ROOT%\etc\profile
-  #
-  # C:\cygwin\etc\defaults\etc\profile
-  # C:\cygwin64\etc\defaults\etc\profile
-  # 
-  - echo "export PATH=/usr/local/bin:/usr/bin" >> %CYG_ROOT%\etc\defaults\etc\profile
-
-  #
   # possible user provided in the matrix
   # (for now, keep this area to be the same as "msys2" and NOT ALL "msys2" FEATURES are implemented)
   #
@@ -227,7 +214,7 @@ for:
   #
   - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R 
   # R ( bash cygwin libbz2_1 libcairo2 libcurl4 libgcc1 libglib2.0_0 libgomp1 libiconv2 libicu69 libintl8 libjpeg8 liblapack0 liblzma5 libopenblas libpango1.0_0 libpcre2_8_0 libpng16 libreadline7 libtiff6 libtirpc3 libX11_6 libXmu6 libXt6 pkg-config tcl tcl-tk zlib0 R_autorebase)
-  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygwin-devel -P libbz2-devel -P libcairo-devel
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygwin-devel -P -P libbz2 -P libbz2-devel -P libcairo-devel
   - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libcurl-devel -P libglib2.0-devel -P libiconv-devel -P libicu-devel 
   - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libjpeg-devel -P liblapack-devel -P liblzma-devel -P libopenblas -P libpango1.0-devel 
   - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpcre2-devel -P libpng16-devel -P libreadline-devel -P libtiff-devel -P libtirpc-devel -P libX11-devel

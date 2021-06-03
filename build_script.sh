@@ -377,6 +377,39 @@ then
     echo '$(info $$G_FLAG is [${G_FLAG}])' >> ${rsource}/src/gnuwin32/MkRules.local
     echo -e "\n"                           >> ${rsource}/src/gnuwin32/MkRules.local 
 
+    echo -e "\n" >> ${rsource}/src/gnuwin32/MkRules.local
+
+    echo "OPENMP = -fopenmp" >> ${rsource}/src/gnuwin32/MkRules.local
+
+    echo "BUILD_HTML = YES"  >> ${rsource}/src/gnuwin32/MkRules.local
+
+    echo "USE_ICU = YES" >> ${rsource}/src/gnuwin32/MkRules.local
+    # NIX default (guessing here) from Mkrules.dist (not OOms MkRuiles.local.in)
+    echo "ICU_LIBS = -lsicuin -lsicuuc -lsicudt -lstdc++" >> ${rsource}/src/gnuwin32/MkRules.local
+
+    echo "USE_CAIRO = YES" >> ${rsource}/src/gnuwin32/MkRules.local
+    echo "CAIRO_LIBS = \"-lcairo -lfreetype -lpng -lpixman-1 -lz -liconv -lgdi32 -lmsimg32\"" >> ${rsource}/src/gnuwin32/MkRules.local
+    echo "CAIRO_CPPFLAGS = -I/usr/include/cairo" >> ${rsource}/src/gnuwin32/MkRules.local
+
+    echo "USE_LIBCURL = YES" >> ${rsource}/src/gnuwin32/MkRules.local
+
+    if [ "${Platform}" == "x64" ]
+    then
+      echo "CURL_LIBS = -lcurl -lrtmp -lssl -lssh2 -lcrypto -lgdi32 -lcrypt32 -lz -lws2_32 -lgdi32 -lcrypt32 -lwldap32 -lwinmm" >> ${rsource}/src/gnuwin32/MkRules.local
+    fi
+
+    if [ "${Platform}" == "x86" ]
+    then
+      echo "CURL_LIBS = -lcurl -lrtmp -lssl -lssh2 -lcrypto -lgdi32 -lcrypt32 -lz -lws2_32 -lgdi32 -lcrypt32 -lwldap32 -lwinmm -lidn" >> ${rsource}/src/gnuwin32/MkRules.local
+    fi
+
+    #
+    echo "QPDF = /usr/"     >> ${rsource}/src/gnuwin32/MkRules.local
+    loginfo               "cat ${rsource}/src/gnuwin32/MkRules.local | grep QPDF"
+                           cat ${rsource}/src/gnuwin32/MkRules.local | grep QPDF
+                           
+    echo -e "\n"            >> ${rsource}/src/gnuwin32/MkRules.local
+
     #
     #  # if I want to use OpenBlas (hacking ATLAS on MSYS2)
     #  sed -i "s/-lf77blas -latlas\b/-lopenblas/" ${rsource}/configure
@@ -388,10 +421,6 @@ then
     #                                         cat ${rsource}/src/extra/blas/Makefile.win | grep openblas
     #
 
-    # UNVERIFIED # I WILL VERIFY/FIX THIS LATER
-    echo "QPDF = /usr/lib/" >> ${rsource}/src/gnuwin32/MkRules.local
-    loginfo               "cat ${rsource}/src/gnuwin32/MkRules.local | grep QPDF"
-                           cat ${rsource}/src/gnuwin32/MkRules.local | grep QPDF
     #
     # https://stackoverflow.com/questions/51364034/how-can-i-install-r-in-linux-server-when-i-run-the-configure-command-i-am-get
     #
