@@ -481,7 +481,7 @@ then
       #
       # undefined references everywhere - try compiling with "good platform choices"
       #
-      ./configure --disable-rpath --enable-R-shlib --enable-BLAS-shlib=no --enable-java=no --without-readline --with-blas --with-lapack --prefix=${rroot} 2>&1 | tee config_interactive.log
+      ./configure --disable-rpath --enable-R-shlib --enable-BLAS-shlib=no --enable-java=no --without-readline --with-blas --with-lapack --without-x --prefix=${rroot} 2>&1 | tee config_interactive.log
       #
     fi
     loginfo "END   R CONFIGURE"
