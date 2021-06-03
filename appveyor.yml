@@ -98,6 +98,11 @@ for:
   # C:\cygwin64\etc\profile
   # 
   - echo "export PATH=/usr/local/bin:/usr/bin" >> %CYG_ROOT%\etc\profile
+  #
+  # C:\cygwin\etc\defaults\etc\profile
+  # C:\cygwin64\etc\defaults\etc\profile
+  # 
+  - echo "export PATH=/usr/local/bin:/usr/bin" >> %CYG_ROOT%\etc\defaults\etc\profile
 
   #
   # possible user provided in the matrix
