@@ -92,6 +92,14 @@ for:
       }
 
   #
+  # cygwin is not-to-inherit the Windows PATH
+  #
+  # C:\cygwin\etc\profile
+  # C:\cygwin64\etc\profile
+  # 
+  - echo "export PATH=/usr/local/bin:/usr/bin" >> %CYG_ROOT%\etc\profile
+
+  #
   # possible user provided in the matrix
   # (for now, keep this area to be the same as "msys2" and NOT ALL "msys2" FEATURES are implemented)
   #
@@ -199,71 +207,43 @@ for:
   #
   - bash -login -c "cygrunsrv -S cygserver"
 
-  # R on cygwin
-  # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
-  ###
-  ### NEED A CYGWIN COMPILED "R", so "rversion" (if any) is effectively ignored
-  #
-  # R ( bash cygwin libbz2_1 libcairo2 libcurl4 libgcc1 libglib2.0_0 libgomp1 libiconv2 libicu69 libintl8 libjpeg8 liblapack0 liblzma5 libopenblas libpango1.0_0 libpcre2_8_0 libpng16 libreadline7 libtiff6 libtirpc3 libX11_6 libXmu6 libXt6 pkg-config tcl tcl-tk zlib0 R_autorebase)
-  #
-  # R-debuginfo (cygwin-debuginfo)
-  # libRMath (cygwin)
-  # libRMath-devel (libRmath pkg-config)
-  #
-  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R -P R-debuginfo -P libRMath-devel
-  ### BUILD MYSELF
+  ### If building myself ###
   # better C development
   # gcc-core gcc-g++ (from gcc-c++) gdb make
   # How to install Cygwin C/C++ compiler and configure code blocks IDE
   # 2017
   # https://youtu.be/24_xtaAePDY?t=48
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P gcc-core -P gcc-g++ -P gcc-fortran -P gdb -P make
+
+  # R on cygwin
+  # https://cygwin.com/cgi-bin2/package-grep.cgi?grep=R-&arch=x86
+  ###
+  ### NEED A CYGWIN COMPILED "R", so "rversion" (if any) is effectively ignored
+  #
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R 
+  # R ( bash cygwin libbz2_1 libcairo2 libcurl4 libgcc1 libglib2.0_0 libgomp1 libiconv2 libicu69 libintl8 libjpeg8 liblapack0 liblzma5 libopenblas libpango1.0_0 libpcre2_8_0 libpng16 libreadline7 libtiff6 libtirpc3 libX11_6 libXmu6 libXt6 pkg-config tcl tcl-tk zlib0 R_autorebase)
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P cygwin-devel -P libbz2-devel -P libcairo-devel
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libcurl-devel -P libglib2.0-devel -P libiconv-devel -P libicu-devel 
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libintl-devel -P libjpeg-devel -P liblapack-devel -P liblzma-devel -P libopenblas -P libpango1.0-devel 
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpcre2-devel -P libpng16-devel -P libreadline-devel -P libtiff-devel -P libtirpc-devel -P libX11-devel
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libXmu-devel -P libXt-devel -P tcl-devel -P tcl-tk-devel -P zlib-devel
+
+  #
+  - if     "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P R-debuginfo -P libRMath-devel
+  #
+  # R-debuginfo (cygwin-debuginfo)
+  # libRMath (cygwin)
+  # libRMath-devel (libRmath pkg-config)
+  #
+
+  # preferred (setup is incomplete)
+  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libqpdf-devel
+
+  #
   # configure looks for the runtime client command line executable
+  #
   - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P unzip
   #
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libicu-devel 
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libtiff-devel
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libjpeg-devel -P libpng16-devel
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libpcre2-devel
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P liblzma-devel 
-  #
-  # -P libbz2-devel
-  # 
-  # checking whether zlib support suffices... yes
-  # checking for BZ2_bzlibVersion in -lbz2... yes
-  # checking bzlib.h usability... yes
-  # checking bzlib.h presence... yes
-  # checking for bzlib.h... yes
-  # checking if bzip2 version >= 1.0.6... yes
-  # checking whether bzip2 support suffices... yes
-  #
-  # https://stackoverflow.com/questions/48633466/cannot-find-bzip2-library-on-cygwin-64-on-win764
-  # https://stackoverflow.com/questions/42076936/zlib-bz2-library-and-headers-are-requried-for-compiling-r
-  #
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libbz2 -P libbz2-devel -P liblzma-devel -P libpcre2-devel -P liblzma-devel
-  #
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P zlib-devel
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libcairo-devel
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P tcl-tk-devel
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libcurl-devel
-  # configure: error: --with-readline=yes (default) and headers/libs are not available
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libreadline-devel
-  # configure: error: --with-x=yes (default) and X11 headers/libs are not available
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libXt-devel
-  # needs a modification (FUTURE)
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libqpdf-devel
-  # needs a modification (FUTURE)
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libopenblas
-
-  # gcc -I../../src/extra -I../../src/extra/xdr -I. -I../../src/include -I../../src/include  -I/usr/local/include -I../../src/nmath -DHAVE_CONFIG_H   -fopenmp  -g -O2  -c platform.c -o platform.o
-  # platform.c:3263:10: fatal error: iconv.h: No such file or directory
-  # 3263 | #include <iconv.h>
-  #      |          ^~~~~~~~~
-  # compilation terminated.
-  #
-  # https://cygwin.com/packages/x86_64/libiconv-devel/libiconv-devel-1.16-2
-  #
-  - if not "%r%"=="none" setup.exe -qnNdO -R "%CYG_ROOT%" -s "%CYG_MIRROR%" -l "%CYG_CACHE%" -P libiconv-devel
 
   build_script:
   # override
